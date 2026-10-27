@@ -1,7 +1,7 @@
-import { compile1D, compile2D, PRESETS_2D, PRESETS_3D } from "./math-engine.js?v=7";
-import { prettyMathHtml } from "./pretty-math.js?v=7";
-import { View2D } from "./view2d.js?v=7";
-import { View3D } from "./view3d.js?v=7";
+import { compile1D, compile2D, PRESETS_2D, PRESETS_3D } from "./math-engine.js?v=12";
+import { prettyMathHtml } from "./pretty-math.js?v=12";
+import { View2D } from "./view2d.js?v=12";
+import { View3D } from "./view3d.js?v=12";
 
 const els = {
   input: document.getElementById("equation-input"),
@@ -45,7 +45,8 @@ const view3d = new View3D(els.canvas3d, updateHud);
 
 function updatePretty() {
   if (!els.pretty) return;
-  els.pretty.innerHTML = prettyMathHtml(els.input.value) || "&nbsp;";
+  const html = prettyMathHtml(els.input.value) || "&nbsp;";
+  els.pretty.innerHTML = `<span class="eq-pretty-inner">${html}</span>`;
 }
 
 function renderPresets() {
@@ -132,14 +133,6 @@ els.input.addEventListener("input", () => {
   if (mode === "2d") els.input.dataset.last2d = els.input.value;
   else els.input.dataset.last3d = els.input.value;
   applyEquation();
-});
-
-els.input.addEventListener("focus", () => {
-  els.eqField?.classList.add("is-editing");
-});
-els.input.addEventListener("blur", () => {
-  els.eqField?.classList.remove("is-editing");
-  updatePretty();
 });
 
 document.getElementById("btn-pan-left").addEventListener("click", () => view2d.panBy(-1));

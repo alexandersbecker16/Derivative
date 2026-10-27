@@ -93,13 +93,13 @@ export function prettyMathHtml(expr) {
     keep(`|${prettyMathHtml(inner)}|`)
   );
 
-  // Powers: x^2, x^-2, (x+1)^3, x^(2+y)
+  // Powers: x^2, x^-2, (x+1)^3, x^(2+y) → paper-style superscripts
   s = s.replace(/(\))(\^)(\([^()]*(?:\([^()]*\)[^()]*)*\))/g, (_, a, _c, exp) => {
     const inner = exp.slice(1, -1);
     return keep(`${a}<sup>${prettyMathHtml(inner)}</sup>`);
   });
   s = s.replace(/([a-zA-Z]|\)|\d)(\^)(-?\d+(?:\.\d+)?)/g, (_, base, _c, exp) =>
-    keep(`${base}<sup>${toSuper(exp)}</sup>`)
+    keep(`${base}<sup>${escapeHtml(exp)}</sup>`)
   );
   s = s.replace(/([a-zA-Z]|\)|\d)(\^)(\([^()]*(?:\([^()]*\)[^()]*)*\))/g, (_, base, _c, exp) => {
     const inner = exp.slice(1, -1);
@@ -119,15 +119,14 @@ export function prettyMathHtml(expr) {
   return s;
 }
 
-/** Unicode-only pretty label for preset buttons */
+/** Unicode-only pretty label (presets / plain-text fallbacks) */
 export function prettyMathText(expr) {
   let s = String(expr ?? "");
   s = s.replace(/\bsqrt\s*\(([^)]+)\)/gi, "√($1)");
-  s = s.replace(/\blog10\s*\(/gi, "log₁₀(");
-  s = s.replace(/\blog2\s*\(/gi, "log₂(");
+  s = s.replace(/\blog([0-9]+(?:\.[0-9]+)?)\s*\(/gi, (_, b) => `log${toSub(b)}(`);
   s = s.replace(/\blog_([0-9]+(?:\.[0-9]+)?|e|pi)\s*\(/gi, (_, b) => `log${toSub(b)}(`);
   s = s.replace(/\bln\s*\(/gi, "ln(");
   s = s.replace(/\*/g, "·");
-  s = s.replace(/\^(-?\d+)/g, (_, n) => toSuper(n));
+  s = s.replace(/\^(-?\d+(?:\.\d+)?)/g, (_, n) => toSuper(n));
   return s;
 }
