@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Derivative Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <h1>Derivative Lab</h1>
+      </div>
+
+      <div class="mode-toggle" role="tablist" aria-label="Dimension mode">
+        <button type="button" class="mode-btn is-active" data-mode="2d" role="tab" aria-selected="true" title="2D plane">
+          2D
+        </button>
+        <button type="button" class="mode-btn" data-mode="3d" role="tab" aria-selected="false" title="3D surface">
+          3D
+        </button>
+      </div>
+    </header>
+
+    <main class="stage">
+      <section class="equation-dock">
+        <label class="eq-label" for="equation-input">
+          <span id="eq-prefix">y =</span>
+        </label>
+        <div class="eq-field">
+          <div
+            id="eq-pretty"
+            class="eq-pretty"
+            aria-hidden="true"
+          ><span class="math-var">x</span><sup>2</sup></div>
+          <input
+            id="equation-input"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            value="x^2"
+            aria-label="Function equation"
+          />
+        </div>
+        <div class="eq-presets" id="eq-presets" aria-label="Example equations"></div>
+        <p class="eq-error" id="eq-error" hidden></p>
+      </section>
+
+      <div class="viewport-wrap">
+        <canvas id="view-2d" class="viewport is-active" aria-label="2D derivative canvas"></canvas>
+        <canvas id="view-3d" class="viewport" aria-label="3D derivative canvas"></canvas>
+
+        <aside class="hud" id="hud">
+          <div class="hud-block">
+            <span class="hud-label" id="hud-secant-label">Secant</span>
+            <span class="hud-value" id="hud-secant">—</span>
+          </div>
+          <div class="hud-block">
+            <span class="hud-label" id="hud-deriv-label">f′(x)</span>
+            <span class="hud-value" id="hud-deriv">—</span>
+          </div>
+          <div class="hud-block hud-gap">
+            <span class="hud-label">Δ approach</span>
+            <span class="hud-value" id="hud-delta">—</span>
+          </div>
+          <div class="overlap-meter">
+            <div class="overlap-track">
+              <div class="overlap-fill" id="overlap-fill"></div>
+            </div>
+            <span class="overlap-caption" id="overlap-caption">Pull points together</span>
+          </div>
+        </aside>
+
+        <div class="hint" id="hint-2d">
+          Drag the handles on the curve. Pan with drag on empty space · scroll to zoom
+        </div>
+        <div class="hint" id="hint-3d" hidden>
+          Drag A, B, C to move the plane · left-drag to pan around · right-drag to rotate · scroll to zoom
+        </div>
+      </div>
+
+      <footer class="controls">
+        <div class="control-group" id="controls-2d">
+          <button type="button" class="ctrl-btn" id="btn-pan-left" title="Pan left">← Pan</button>
+          <button type="button" class="ctrl-btn" id="btn-pan-right" title="Pan right">Pan →</button>
+          <button type="button" class="ctrl-btn" id="btn-reset-2d">Reset view</button>
+          <button type="button" class="ctrl-btn ghost" id="btn-snap-2d">Snap points closer</button>
+        </div>
+        <div class="control-group" id="controls-3d" hidden>
+          <button type="button" class="ctrl-btn" id="btn-pan-3d-left" title="Pan left">← Pan</button>
+          <button type="button" class="ctrl-btn" id="btn-pan-3d-right" title="Pan right">Pan →</button>
+          <button type="button" class="ctrl-btn" id="btn-reset-3d">Reset camera</button>
+          <button type="button" class="ctrl-btn ghost" id="btn-snap-3d">Snap points closer</button>
+          <label class="toggle-row">
+            <input type="checkbox" id="show-tangent-plane" checked />
+            <span>Show secant / tangent plane</span>
+          </label>
+        </div>
+      </footer>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"></script>
+    <script type="module" src="js/main.js?v=7"></script>
+  </body>
+</html>
